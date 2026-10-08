@@ -1,0 +1,38 @@
+site_name: bling-sdk
+site_description: SDK Python para a API v3 do Bling ERP
+theme:
+  name: material
+  language: pt-BR
+  features:
+    - navigation.sections
+    - content.code.copy
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            show_source: false
+            docstring_style: sphinx
+markdown_extensions:
+  # Os blocos `!!! warning` / `!!! danger` da documentacao dependem destes.
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Início: index.md
+  - Autenticação: auth.md
+  - Limites e retry: limites.md
+  - Paginação: paginacao.md
+  - PUT vs PATCH: put-vs-patch.md
+  - Webhooks: webhooks.md
+  - CLI: cli.md
+  - Django: django.md
+  - Multi-empresa: multi-empresa.md
+  - Migração: migracao.md
+  - Referência: reference.md
