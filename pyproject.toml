@@ -15,6 +15,11 @@ classifiers = [
   "Typing :: Typed",
 ]
 
+[project.urls]
+Repository = "https://github.com/GabMalta/bling-sdk"
+Documentation = "https://github.com/GabMalta/bling-sdk/tree/main/docs"
+"API do Bling" = "https://developer.bling.com.br"
+
 [project.scripts]
 bling = "bling_sdk.auth.cli:main"
 

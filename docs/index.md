@@ -3,7 +3,7 @@
 SDK Python para a [API v3 do Bling ERP](https://developer.bling.com.br).
 
 ```bash
-pip install git+https://github.com/GabMalta/bling_sdk
+pip install git+https://github.com/GabMalta/bling-sdk
 ```
 
 ## Primeiro uso

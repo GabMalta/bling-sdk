@@ -6,7 +6,7 @@ guardar tokens no banco que já tem.
 ## Instalação
 
 ```bash
-pip install "bling-sdk[django] @ git+https://github.com/GabMalta/bling_sdk"
+pip install "bling-sdk[django] @ git+https://github.com/GabMalta/bling-sdk"
 ```
 
 ## Modelo

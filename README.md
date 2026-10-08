@@ -11,7 +11,7 @@ Requer Python 3.10+. Depende apenas de `httpx` e `pydantic`.
 ## Instalação
 
 ```bash
-pip install git+https://github.com/GabMalta/bling_sdk
+pip install git+https://github.com/GabMalta/bling-sdk
 ```
 
 ## Uso

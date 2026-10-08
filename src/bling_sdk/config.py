@@ -55,7 +55,7 @@ INTERVALO_MAXIMO_FILTRO = timedelta(days=366)
 FORMATO_DATA = "%Y-%m-%d"
 FORMATO_DATA_HORA = "%Y-%m-%d %H:%M:%S"
 
-USER_AGENT = f"bling-sdk/{__version__} (+https://github.com/GabMalta/bling_sdk)"
+USER_AGENT = f"bling-sdk/{__version__} (+https://github.com/GabMalta/bling-sdk)"
 
 
 def diretorio_padrao() -> Path:
