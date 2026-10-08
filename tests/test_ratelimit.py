@@ -12,6 +12,15 @@ from bling_sdk.ratelimit import (
     registrar_limitador,
 )
 
+# time.monotonic() no Windows tem resolucao de ~15,6 ms (GetTickCount64), e o tempo MEDIDO
+# quantiza nesse passo: uma espera real de 0,203 s pode ser lida como 0,187. Toda assercao de
+# tempo desconta uma tick, senao o teste falha de forma intermitente sem nada estar errado.
+TICK = time.get_clock_info("monotonic").resolution
+
+
+def pelo_menos(decorrido: float, esperado: float) -> None:
+    assert decorrido >= esperado - TICK, f"esperado >= {esperado}, medido {decorrido:.4f}"
+
 
 @pytest.fixture(autouse=True)
 def _registro_limpo():
@@ -31,7 +40,7 @@ def test_tres_chamadas_cabem_rapido_a_quarta_espera():
 
     # O intervalo minimo espaca as tres primeiras, mas a quarta espera a janela inteira.
     assert quatro > tres
-    assert quatro >= 0.3
+    pelo_menos(quatro, 0.3)
 
 
 def test_intervalo_minimo_impede_rajada():
@@ -47,7 +56,7 @@ def test_intervalo_minimo_impede_rajada():
         lim.acquire()
     decorrido = time.monotonic() - inicio
     # intervalo minimo = 0.3/3 = 0.1; a 1a sai na hora, a 2a em +0.1, a 3a em +0.2.
-    assert decorrido >= 0.19, decorrido
+    pelo_menos(decorrido, 0.2)
 
 
 def test_max_chamadas_invalido():
@@ -73,7 +82,7 @@ def test_penalize_pausa_todas_as_threads():
         t.join()
 
     assert len(liberadas) == 4
-    assert min(liberadas) >= 0.28, liberadas
+    pelo_menos(min(liberadas), 0.3)
 
 
 def test_penalize_nao_encurta_pausa_existente():
@@ -127,7 +136,7 @@ def test_arquivo_limiter_espaca_chamadas(tmp_path):
     inicio = time.monotonic()
     for _ in range(4):
         lim.acquire()
-    assert time.monotonic() - inicio >= 0.2
+    pelo_menos(time.monotonic() - inicio, 0.2)
 
 
 def test_dois_limiters_no_mesmo_arquivo_coordenam(tmp_path):
@@ -141,7 +150,7 @@ def test_dois_limiters_no_mesmo_arquivo_coordenam(tmp_path):
     b.acquire()
     a.acquire()
     b.acquire()  # a 4a chamada no total precisa esperar a janela virar
-    assert time.monotonic() - inicio >= 0.4
+    pelo_menos(time.monotonic() - inicio, 0.4)
 
 
 def test_arquivo_limiter_penalize_atravessa_instancias(tmp_path):
@@ -151,7 +160,7 @@ def test_arquivo_limiter_penalize_atravessa_instancias(tmp_path):
     a.penalize(0.3)
     inicio = time.monotonic()
     b.acquire()
-    assert time.monotonic() - inicio >= 0.28
+    pelo_menos(time.monotonic() - inicio, 0.3)
 
 
 def test_arquivo_corrompido_e_resetado_nao_levanta(tmp_path):
